@@ -1,5 +1,5 @@
 // 分类信息接口（适用于一级和二级分类）
-interface Category {
+export interface Category {
     id: number
     name: string
     keywords: string
@@ -15,13 +15,13 @@ interface Category {
 }
 
 // 分类数据接口
-interface CategoryData {
+export interface CategoryData {
     currentCategory: Category           // 当前选中的一级分类
     currentSubCategory: Category[]      // 对应的二级分类列表
 }
 
 // API 响应接口
-interface CategoryResponse {
+export interface CategoryResponse {
     errno: number
     data: CategoryData
     errmsg: string
