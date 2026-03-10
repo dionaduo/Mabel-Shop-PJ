@@ -2,7 +2,7 @@ import axios from "axios";
 import type { AxiosError, InternalAxiosRequestConfig, AxiosResponse } from "axios";
 export const httpRequest = axios.create({
     //   baseURL: '',
-    timeout: 5000,
+    timeout: 10000,
 })
 
 //请求拦截
