@@ -244,9 +244,11 @@ const toggleEditMode = () => {
 // 切换店铺选中状态
 const toggleShop = (shopIndex: number) => {
   const shop = groupedCart.value[shopIndex]
-  shop.checked = !shop.checked
+  if (!shop) return
+  const newCheckedState = !shop.checked
+  // 直接修改cartList中的items，而不是修改computed返回的对象
   shop.items.forEach(item => {
-    item.checked = shop.checked
+    item.checked = newCheckedState
   })
 }
 

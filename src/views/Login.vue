@@ -52,8 +52,8 @@
 import { ref, reactive } from 'vue'
 import { useRouter } from 'vue-router'
 import { showToast} from 'vant'
-import { login } from '@/api/user/login.ts'
-import type { LoginParams } from '@/types/user/login.ts'
+import { login } from '@/api/mine/login.ts'
+import type { LoginParams } from '@/types/mine/login.ts'
 
 const router = useRouter()
 

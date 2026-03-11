@@ -232,7 +232,7 @@
 
 <script setup lang="ts">
 import { computed } from 'vue'
-import { showConfirmDialog, showToast } from 'vant'
+import { showConfirmDialog } from 'vant'
 import { useRouter } from 'vue-router'
 import { useGoodsDetailStore } from '@/stores/goodsDetail'
 
@@ -240,7 +240,7 @@ const onClickLeft = () => history.back();
 
 // Props定义
 const props = defineProps<{
-  goodsId: number | string[] | undefined |string
+  goodsId: number | string | undefined
 }>()
 
 const router = useRouter()
@@ -274,7 +274,7 @@ const goToComment = () => {
 
 const formatTime = (time: string): string => {
   if (!time) return ''
-  return time.split(' ')[0]
+  return time?.split(' ')[0] ?? ''
 }
 
 const previewGallery = (index: number) => {

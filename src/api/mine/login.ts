@@ -1,5 +1,5 @@
 import { httpRequest } from '@/utils/request'
-import type { LoginParams, LoginResult, ApiResponse } from '@/types/user/login.ts'
+import type { LoginParams, LoginResult, ApiResponse } from '@/types/mine/login.ts'
 
 /**
  * 用户登录

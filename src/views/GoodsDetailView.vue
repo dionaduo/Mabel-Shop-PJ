@@ -1,5 +1,5 @@
 <template>
-  <GoodsDetail :goods-id="route.params.id" />
+  <GoodsDetail :goods-id="Array.isArray(route.params.id) ? route.params.id[0] : route.params.id" />
 </template>
 
 <script setup lang="ts">
@@ -12,7 +12,7 @@ const route = useRoute()
 const store = useGoodsDetailStore()
 
 onMounted(() => {
-  const id = route.params.id
+  const id = Array.isArray(route.params.id) ? route.params.id[0] : route.params.id
   if (id) {
     store.reset()           // 切换商品时重置规格选择
     store.fetchGoodsDetail(id)

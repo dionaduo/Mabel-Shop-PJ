@@ -1,13 +1,7 @@
-export interface GoodsItem {
-    id: number
-    name: string
-    brief: string
-    picUrl: string
-    isNew: boolean
-    isHot: boolean
-    counterPrice: number
-    retailPrice: number
-}
+import type { GoodsItem } from '../home/homeData.ts'
+
+// 商品基础接口（从homeData.ts导入，避免重复定义）
+export type { GoodsItem } from '../home/homeData.ts'
 
 export interface FilterCategory {
     id: number
@@ -31,6 +25,9 @@ export interface GoodsListData {
 }
 
 export interface GoodsListResponse {
+    pages: any
+    filterCategoryList: never[]
+    list: any
     errno: number
     data: GoodsListData
     errmsg: string

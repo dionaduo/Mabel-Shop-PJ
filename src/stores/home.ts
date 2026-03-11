@@ -10,7 +10,7 @@ import type {
     GoodsItem,
     GrouponItem,
     TopicItem
-} from '@/types/homeData.ts'
+} from '@/types/home/homeData.ts'
 
 export const useHomeStore = defineStore('home', () => {
     const bannerList = ref<BannerItem[]>([])

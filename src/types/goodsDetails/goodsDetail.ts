@@ -164,8 +164,10 @@ export interface AddCartResponse {
 export interface FastAddParams extends AddCartParams {}
 
 // 立即购买响应
-export interface FastAddResponse extends AddCartResponse {
+export interface FastAddResponse {
+    errno: number
     data: {
         cartId: number
     }
+    errmsg: string
 }

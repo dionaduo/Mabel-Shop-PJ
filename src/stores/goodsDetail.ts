@@ -1,6 +1,6 @@
 // src/stores/goodsDetail.ts
 import { defineStore } from 'pinia'
-import { ref, computed, watch } from 'vue'
+import { ref, computed } from 'vue'
 import { getGoodsDetail, addToCart, fastAddToCart, getCartCount, toggleCollect } from '@/api/goodDetails/goods'
 import type {
     GoodsInfo,
@@ -19,7 +19,7 @@ export const useGoodsDetailStore = defineStore('goodsDetail', () => {
     const router = useRouter()
 
     // ==================== 状态 ====================
-    const goodsInfo = ref<GoodsInfo>()
+    const goodsInfo = ref<GoodsInfo | undefined>(undefined)
     const specificationList = ref<SpecificationItem[]>([])
     const productList = ref<ProductItem[]>([])
     const attributeList = ref<AttributeItem[]>([])
@@ -93,9 +93,9 @@ export const useGoodsDetailStore = defineStore('goodsDetail', () => {
 
                 // 单规格自动选中
                 if (specificationList.value.length === 1 &&
-                    specificationList.value[0].valueList.length === 1) {
+                    specificationList.value[0]?.valueList.length === 1) {
                     const spec = specificationList.value[0]
-                    selectSku(spec.name, spec.valueList[0].value)
+                    selectSku(spec.name, spec.valueList?.[0]?.value || '')
                 }
             } else {
                 showToast(res.errmsg || '获取商品信息失败')
@@ -131,7 +131,7 @@ export const useGoodsDetailStore = defineStore('goodsDetail', () => {
         quantity.value = value
     }
 
-    const confirmSku = () => {
+    const confirmSku = (): boolean => {
         if (!currentProduct.value) {
             showToast('请选择完整的商品规格')
             return false
@@ -157,6 +157,10 @@ export const useGoodsDetailStore = defineStore('goodsDetail', () => {
         }
 
         const product = currentProduct.value || productList.value[0]
+        if (!product) {
+            showToast('商品信息不完整')
+            return { errno: -1 }
+        }
         if (product.number <= 0) {
             showToast('库存不足')
             return { errno: -1 }
@@ -198,6 +202,10 @@ export const useGoodsDetailStore = defineStore('goodsDetail', () => {
         }
 
         const product = currentProduct.value || productList.value[0]
+        if (!product) {
+            showToast('商品信息不完整')
+            return { errno: -1 }
+        }
         if (product.number <= 0) {
             showToast('库存不足')
             return { errno: -1 }

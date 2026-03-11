@@ -55,8 +55,8 @@
 <script setup lang="ts">
 import { ref, onMounted, watch } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
-import { GetGoodsList } from '@/api/goods'
-import type { GoodsItem, FilterCategory } from '@/types/goods'
+import { GetGoodsList } from '@/api/category/goods.ts'
+import type { GoodsItem, FilterCategory } from '@/types/category/goods.ts'
 import { showToast } from 'vant'
 
 const route = useRoute()

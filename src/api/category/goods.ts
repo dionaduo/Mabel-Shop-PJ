@@ -1,5 +1,5 @@
-import { httpRequest } from '@/utils/request'
-import type {GoodsListResponse} from "@/types/goods.ts";
+import { httpRequest } from '@/utils/request.ts'
+import type {GoodsListResponse} from "@/types/category/goods.ts";
 
 export const GetGoodsList = (
     categoryId: number,

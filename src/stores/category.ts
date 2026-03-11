@@ -2,7 +2,7 @@
 import { defineStore } from 'pinia'
 import { ref } from 'vue'
 import { GetHome, GetCategory } from '@/api'
-import type { ChannelItem } from '@/types/homeData.ts'
+import type { ChannelItem } from '@/types/home/homeData.ts'
 import type { Category } from '@/types/goodsDetails/category.ts'
 
 export const useCategoryStore = defineStore('category', () => {
