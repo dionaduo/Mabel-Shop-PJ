@@ -14,6 +14,7 @@
     "@types/axios": "^0.9.36",
     "axios": "^1.13.6",
     "pinia": "^3.0.4",
+    "pinia-plugin-persistedstate-2": "^2.0.32",
     "reset.css": "^2.0.2",
     "vant": "^4.9.22",
     "vue": "^3.5.29",

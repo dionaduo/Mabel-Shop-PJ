@@ -6,7 +6,7 @@ const router = createRouter({
     {
       path: '/',
       redirect(to, from) {
-          return '/home'
+        return '/home'
       },
     },{
       path: '/home',
@@ -15,7 +15,7 @@ const router = createRouter({
     }, {
       path:'/category',
       name:'category',
-      component:()=>import('@/views/Category.vue')
+      component:()=>import('@/views/Category.vue'),
     },{
       path:'/cart',
       name:'cart',
@@ -24,6 +24,15 @@ const router = createRouter({
       path:'/mine',
       name:'mine',
       component:()=>import('@/views/Mine.vue')
+    }, {
+      path:`/category/items`,
+      name:'items',
+      component:()=>import('@/views/CategoryList.vue')
+    },
+    {
+      path: '/goods/:id',
+      name: 'goods-detail',
+      component: () => import('@/views/GoodsDetailView.vue')
     }
   ],
 })

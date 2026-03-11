@@ -6,7 +6,7 @@ export * from './goodDetails/cart.ts'
 export * from './goodDetails/address.ts'
 export * from './goodDetails/coupon.ts'
 export * from './goodDetails/order.ts'
-
+export * from './goods'
 // 添加参数类型
 interface RequestOptions {
     signal?: AbortSignal  // 可选的取消信号
