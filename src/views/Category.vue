@@ -26,7 +26,6 @@
         />
       </van-sidebar>
     </div>
-
     <!-- 右侧子分类列表 -->
     <div class="right-cate" v-if="!loading">
       <!-- 主分类图片展示 -->
@@ -63,10 +62,10 @@
 
 <script setup lang="ts">
 import { onMounted, ref, reactive, toRefs } from 'vue'
-import { showLoadingToast, closeToast, showToast } from 'vant'
-import type { ChannelItem } from "../../types/shopData"
+import {showToast } from 'vant'
+import type { ChannelItem } from "@/types/homeData.ts"
 import { GetCategory, GetHome } from "@/api"
-import type { Category, CategoryData } from "../../types/category"
+import type { Category, CategoryData } from "@/types/goodsDetails/category.ts"
 
 // 状态定义
 const activeIndex = ref(0)

@@ -115,6 +115,8 @@
           </div>
         </van-grid-item>
       </van-grid>
+      <van-back-top bottom="10vh"/>
+
     </template>
 
     <!-- 加载状态 -->
@@ -129,7 +131,7 @@
 import {onMounted, reactive, ref, computed, onUnmounted, toRefs} from 'vue'
 import { showToast } from 'vant'
 import { GetHome } from '@/api'
-import SectionHeader from './SectionHeader.vue'
+import SectionHeader from '../components/SectionHeader.vue'
 import type {
   BannerItem,
   BrandItem,
@@ -138,7 +140,7 @@ import type {
   GoodsItem,
   GrouponItem,
   TopicItem
-} from '../../types/shopData'
+} from '@/types/homeData.ts'
 
 const searchValue = ref('')
 const loading = ref(false)
