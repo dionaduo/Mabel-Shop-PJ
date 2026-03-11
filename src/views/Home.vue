@@ -128,25 +128,22 @@
 </template>
 
 <script setup lang="ts">
-import {onMounted, reactive, ref, computed, onUnmounted, toRefs} from 'vue'
+import { onMounted, onUnmounted, reactive, ref, computed, toRefs } from 'vue'
 import { showToast } from 'vant'
 import { GetHome } from '@/api'
 import SectionHeader from '../components/SectionHeader.vue'
 import type {
-  BannerItem,
-  BrandItem,
-  ChannelItem,
-  CouponItem,
-  GoodsItem,
-  GrouponItem,
-  TopicItem
+  BannerItem, BrandItem, ChannelItem, CouponItem,
+  GoodsItem, GrouponItem, TopicItem
 } from '@/types/homeData.ts'
+import { deepClone, isDataEqual, loadCache, saveCache } from '@/utils/cache' // ← 新增
+
+const CACHE_KEY = 'homeDataCache'
 
 const searchValue = ref('')
 const loading = ref(false)
 const abortController = ref<AbortController | null>(null)
 
-// 统一使用 reactive 管理所有数据
 const homeData = reactive({
   banner: [] as BannerItem[],
   channel: [] as ChannelItem[],
@@ -158,7 +155,6 @@ const homeData = reactive({
   topicList: [] as TopicItem[]
 })
 
-// 解构数据以便在模板中使用
 const {
   banner: bannerList,
   channel: channelList,
@@ -170,7 +166,6 @@ const {
   topicList
 } = toRefs(homeData)
 
-// 计算属性：是否为空
 const isEmpty = computed(() => {
   return !bannerList.value.length &&
       !channelList.value.length &&
@@ -181,70 +176,68 @@ const isEmpty = computed(() => {
       !hotGoodsList.value.length &&
       !topicList.value.length
 })
-
 // 格式化价格
 const formatPrice = (price: number) => {
   return price.toFixed(2)
 }
 
-// 错误处理
-const handleError = (error: any) => {
-  console.error('Home page error:', error)
-  if (error.name === 'AbortError') {
-    return // 忽略取消请求的错误
+// ==================== 核心缓存逻辑 ====================
+const loadHomeCache = () => {
+  const cached = loadCache<typeof homeData>(CACHE_KEY)
+  if (cached) {
+    Object.assign(homeData, cached)   // 瞬间渲染缓存
+    console.log('✅ Home 页面使用缓存数据')
+  } else {
+    loading.value = true
   }
-  const message = error.response?.data?.errmsg || error.message || '网络开小差了~'
-  showToast(message)
 }
 
-// 一次性获取所有首页数据
 const fetchHomeData = async () => {
-  loading.value = true
+  const previousData = deepClone(homeData)   // 用于对比
+
   try {
     const res = await GetHome()
-    console.log('API返回的完整数据:', res)  // 添加这行
-
     if (res?.data) {
-      const data = res.data
+      const newData = {
+        banner: res.data.banner || [],
+        channel: res.data.channel || [],
+        couponList: res.data.couponList || [],
+        grouponList: res.data.grouponList || [],
+        brandList: res.data.brandList || [],
+        newGoodsList: res.data.newGoodsList || [],
+        hotGoodsList: res.data.hotGoodsList || [],
+        topicList: res.data.topicList || []
+      }
 
-      Object.assign(homeData, {
-        banner: data.banner || [],
-        channel: data.channel || [],
-        couponList: data.couponList || [],
-        grouponList: data.grouponList || [],
-        brandList: data.brandList || [],
-        newGoodsList: data.newGoodsList || [],
-        hotGoodsList: data.hotGoodsList || [],
-        topicList: data.topicList || []
-      })
+      // 始终保存最新数据到缓存（保持时间戳更新）
+      saveCache(CACHE_KEY, newData)
+
+      // 关键：数据不同才更新界面（避免不必要的重渲染）
+      if (!isDataEqual(newData, previousData)) {
+        Object.assign(homeData, newData)
+        console.log('🔄 Home 数据已更新（缓存与服务器不一致）')
+      } else {
+        console.log('✅ Home 数据与缓存一致，无需更新')
+      }
     }
   } catch (error: any) {
-    handleError(error)
+    console.error('Home fetch error:', error)
+    if (error.name !== 'AbortError') {
+      showToast(error.response?.data?.errmsg || '网络开小差了~')
+    }
   } finally {
     loading.value = false
   }
 }
 
-// 使用防抖处理搜索（如果后续有搜索功能）
-let searchTimer: number
-const handleSearch = () => {
-  clearTimeout(searchTimer)
-  searchTimer = setTimeout(() => {
-    // 执行搜索逻辑
-    console.log('搜索:', searchValue.value)
-  }, 300)
-}
-
+// ==================== 生命周期 ====================
 onMounted(() => {
-  fetchHomeData()
+  loadHomeCache()        // 瞬间显示缓存
+  fetchHomeData()        // 后台校验刷新
 })
 
-// 组件卸载时取消请求
 onUnmounted(() => {
-  if (abortController.value) {
-    abortController.value.abort()
-  }
-  clearTimeout(searchTimer)
+  if (abortController.value) abortController.value.abort()
 })
 </script>
 
